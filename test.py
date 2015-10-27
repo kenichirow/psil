@@ -1,5 +1,6 @@
 from atom import Atom, Symbol
 from list import List
+from main import Reader
 
 
 def test_atom():
@@ -35,3 +36,13 @@ def test_list_cons():
 def test_list_get_item():
     assert(List()[0] is None)
     assert(List([1])[0] == 1)
+
+
+def test_token():
+    r = Reader("(1 2)")
+    s = r.get_sexpr()
+    assert(s == ["1", "2"])
+
+    r = Reader("('foobar' 2)")
+    s = r.get_sexpr()
+    assert(s == ["'foobar'", "2"])

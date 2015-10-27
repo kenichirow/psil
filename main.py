@@ -1,6 +1,10 @@
+import string
 from optparse import OptionParser
 
 __version__ = '0.0.1'
+
+SPECIAL_FORMS = '()'
+DELIM = string.whitespace + SPECIAL_FORMS
 
 
 def _plus(lhs, rhs):
@@ -8,49 +12,59 @@ def _plus(lhs, rhs):
 
 
 FUNCTIONS = {'+': _plus}
-SPECIAL_FORMS = '()'
 
 
 class Reader:
     def __init__(self, string=None):
         self.source = string
         self.index = 0
+        self.length = len(string)
         self.expressions = []
-        print self.process(self.source)
         self.level = 1
 
-    def execute(self, commands):
-        if commands != []:
-            commands.reverse()
-            s = commands.pop()
-            if s in FUNCTIONS.keys():
-                return FUNCTIONS[s](*commands)
+    def get_sexpr(self):
+        expr = []
+        token = self.get_token()
+        assert token == "("
+        # start of sexpr
+        if token == "(":
+            token = self.get_token()
+            expr.append(token)
+            while token != ')' and self.index != self.length:
+                self.next()
+                token = self.get_token()
+                if token is not None:
+                    expr.append(token)
 
-    def create_command(self, source):
-        tokens = []
-        for i, n in enumerate(source):
-            self.index += 1
-            if n == '(':
-                tokens.append(self.create_command(source[self.index:]))
-            if n == ')':
+        return expr
+
+    def get_token(self):
+        token_str = ""
+        if self.index == self.length:
+            return None
+        if self.current() in SPECIAL_FORMS:
+            self.next()
+            return self.previous()
+
+        while self.index < self.length - 1:
+            if self.current() in DELIM:
                 break
-            if n not in SPECIAL_FORMS and n != ' ':
-                tokens.append(n)
-        return tokens
+            else:
+                token_str = token_str + self.current()
+                self.next()
+        return token_str
 
-    def process(self, source):
-        if len(source) == 0:
-            return
-        commands = []
-        while self.index < len(source):
-            token = source[self.index]
-            if token == ' ':
-                continue
-            if token == '(':
-                self.index += 1
-                commands = self.create_command(source[self.index:])
-                print commands
-        return self.execute(commands)
+    def next(self):
+        self.index += 1
+
+    def prev(self):
+        self.idnex -= 1
+
+    def current(self):
+        return self.source[self.index]
+
+    def previous(self):
+        return self.source[self.index-1]
 
 
 if __name__ == '__main__':
