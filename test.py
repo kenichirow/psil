@@ -17,10 +17,15 @@ def test_symbol():
     assert(a1 != a2)
 
 
+def test_symbol_eq():
+    return Symbol(1) == Symbol(1)
+
+
 def test_list():
     l1 = List([1, 2, 3])
     assert(l1.car() == 1)
     assert(l1.cdr() == List([2, 3]))
+    assert(List().cdr() == List())
 
 
 def test_list_cons():

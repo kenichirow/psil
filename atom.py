@@ -21,6 +21,9 @@ class Symbol(Atom):
     def __hash__(self):
         return hash(self.data)
 
+    def __eq__(self, rhs):
+        return self.data == rhs.data
+
     def eval(self, env, args=None):
         return env.get(self.data)
 
