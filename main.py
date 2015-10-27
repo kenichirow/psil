@@ -25,7 +25,6 @@ class Reader:
     def get_sexpr(self):
         expr = []
         token = self.get_token()
-        assert token == "("
         # start of sexpr
         if token == "(":
             token = self.get_token()
@@ -33,7 +32,14 @@ class Reader:
             while token != ')' and self.index != self.length:
                 self.next()
                 token = self.get_token()
-                if token is not None:
+
+                if token is None:
+                    break
+                elif token == '(':
+                    self.prev()
+                    child = self.get_sexpr()
+                    expr.append(child)
+                else:
                     expr.append(token)
 
         return expr
@@ -52,13 +58,14 @@ class Reader:
             else:
                 token_str = token_str + self.current()
                 self.next()
+
         return token_str
 
     def next(self):
         self.index += 1
 
     def prev(self):
-        self.idnex -= 1
+        self.index -= 1
 
     def current(self):
         return self.source[self.index]
