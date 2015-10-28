@@ -7,13 +7,6 @@ SPECIAL_FORMS = '()'
 DELIM = string.whitespace + SPECIAL_FORMS
 
 
-def _plus(lhs, rhs):
-    return int(lhs) + int(rhs)
-
-
-FUNCTIONS = {'+': _plus}
-
-
 class Reader:
     def __init__(self, string=None):
         self.source = string
