@@ -35,12 +35,10 @@ class Reader:
                     self.prev()
                     child = self.get_sexpr()
                     expr.append(child)
-                elif token != ")":
-                    expr.append(token)
+                elif token == ")":
+                    self.prev()
                 else:
-                    if token != ")":
-                        pass
-
+                    expr.append(token)
 
         return List(expr)
 
@@ -58,7 +56,6 @@ class Reader:
             else:
                 token_str = token_str + self.current()
                 self.next()
-
         return token_str
 
     def next(self):
@@ -83,5 +80,6 @@ if __name__ == '__main__':
             lines = f.readlines()
             for line in lines:
                 r = Reader(line.strip())
+                r.get_sexpr()
     else:
         print 'need file name'

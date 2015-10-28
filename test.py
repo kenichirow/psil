@@ -51,4 +51,5 @@ def test_expr():
 def test_nest_expr():
     r = Reader("(1 (1 2))")
     s = r.get_sexpr()
-    assert(s == List(["1", ["1", "2"]]))
+    assert(s.car() == "1")
+    assert(s.cdr().car() == List(["1", "2"]))
