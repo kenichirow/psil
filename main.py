@@ -1,6 +1,8 @@
 import string
 from optparse import OptionParser
 
+from list import List
+
 __version__ = '0.0.1'
 
 SPECIAL_FORMS = '()'
@@ -40,7 +42,7 @@ class Reader:
                         pass
 
 
-        return expr
+        return List(expr)
 
     def get_token(self):
         token_str = ""

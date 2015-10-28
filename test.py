@@ -41,13 +41,14 @@ def test_list_get_item():
 def test_expr():
     r = Reader("(1 2)")
     s = r.get_sexpr()
-    assert(s == ["1", "2"])
+    assert(s == List(["1", "2"]))
 
     r = Reader("('foobar' 2)")
     s = r.get_sexpr()
-    assert(s == ["'foobar'", "2"])
+    assert(s == List(["'foobar'", "2"]))
+
 
 def test_nest_expr():
     r = Reader("(1 (1 2))")
     s = r.get_sexpr()
-    assert(s == ["1", ["1", "2"]])
+    assert(s == List(["1", ["1", "2"]]))
