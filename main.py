@@ -22,18 +22,23 @@ class Reader:
         if token == "(":
             token = self.get_token()
             expr.append(token)
-            while token != ')' and self.index != self.length:
+            while token != ')':
                 self.next()
                 token = self.get_token()
 
                 if token is None:
                     break
-                elif token == '(':
+
+                elif token == "(":
                     self.prev()
                     child = self.get_sexpr()
                     expr.append(child)
-                else:
+                elif token != ")":
                     expr.append(token)
+                else:
+                    if token != ")":
+                        pass
+
 
         return expr
 
