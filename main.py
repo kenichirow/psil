@@ -9,6 +9,17 @@ SPECIAL_FORMS = '()'
 DELIM = string.whitespace + SPECIAL_FORMS
 
 
+class Environment:
+    def __init__(self):
+        self.labels = {}
+
+    def set(self, expr):
+        name = expr.car()
+        body = expr.cdr()
+        if self.labels[name] is not None:
+            self.labels[name] = body
+
+
 class Reader:
     def __init__(self, string=None):
         self.source = string
