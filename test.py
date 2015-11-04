@@ -1,6 +1,7 @@
 from atom import Atom, Symbol
 from list import List
 from main import Reader
+# from env import Environment
 
 
 def test_atom():
@@ -48,8 +49,23 @@ def test_expr():
     assert(s == List(["'foobar'", "2"]))
 
 
+def test_multiline():
+    with open('./multiline', 'r') as f:
+        lines = ' '.join(f.readlines())
+        r = Reader(lines)
+        expr = r.get_sexpr()
+        assert(type(expr.cdr()[1] == Symbol('2')))
+
+
 def test_nest_expr():
     r = Reader("(1 (1 2))")
     s = r.get_sexpr()
     assert(s.car() == "1")
     assert(s.cdr().car() == List(["1", "2"]))
+# def test_env():
+#     env = Environment()
+#     cdr = List([Symbol("1"), Symbol("2")])
+#     env.set(List(["foo", cdr]))
+#     foo = env.get("foo")
+#     assert(foo is not None)
+#     assert(foo.car() == Symbol("1"))
