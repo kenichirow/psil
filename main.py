@@ -1,23 +1,14 @@
 import string
 from optparse import OptionParser
+from env import Environment
 
 from list import List
+
 
 __version__ = '0.0.1'
 
 SPECIAL_FORMS = '()'
 DELIM = string.whitespace + SPECIAL_FORMS
-
-
-class Environment:
-    def __init__(self):
-        self.labels = {}
-
-    def set(self, expr):
-        name = expr.car()
-        body = expr.cdr()
-        if self.labels[name] is not None:
-            self.labels[name] = body
 
 
 class Reader:
@@ -86,6 +77,8 @@ if __name__ == '__main__':
     p = OptionParser(version="ver:%s" % __version__)
     p.add_option('-f', '--file', help='target file')
     opts, args = p.parse_args()
+    env = Environment()
+
     if opts.file:
         with open(opts.file, 'r') as f:
             lines = f.readlines()
