@@ -16,7 +16,7 @@ class Symbol(Atom):
         Atom.__init__(self, data)
 
     def __repr__(self):
-        return "Symbol:{} type: {} :{}".format(self.data, type(self.data))
+        return "Symbol:{} type: {} ".format(self.data, type(self.data))
 
     def __hash__(self):
         return hash(self.data)

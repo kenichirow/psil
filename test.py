@@ -1,7 +1,7 @@
 from atom import Atom, Symbol
 from list import List
 from main import Reader
-# from env import Environment
+from env import Environment
 
 
 def test_atom():
@@ -62,10 +62,11 @@ def test_nest_expr():
     s = r.get_sexpr()
     assert(s.car() == "1")
     assert(s.cdr().car() == List(["1", "2"]))
-# def test_env():
-#     env = Environment()
-#     cdr = List([Symbol("1"), Symbol("2")])
-#     env.set(List(["foo", cdr]))
-#     foo = env.get("foo")
-#     assert(foo is not None)
-#     assert(foo.car() == Symbol("1"))
+
+
+def test_env():
+    env = Environment()
+    expr = List([Symbol("foo"), Symbol("1"), Symbol("2")])
+    env.push(expr.car(), expr.cdr())
+    foo = env.find(Symbol("foo"))
+    assert(foo == [Symbol("1"), Symbol("2")])
