@@ -9,6 +9,9 @@ class Atom():
         else:
             return False
 
+    def eval(self, env, args=None):
+        return self.data
+
 
 class Symbol(Atom):
 
@@ -26,5 +29,14 @@ class Symbol(Atom):
 
     def eval(self, env, args=None):
         return env.get(self.data)
+
+
+class Number(Symbol):
+    def __init__(self, data):
+        Atom.__init__(self, data)
+
+    def eval(self, env, args=None):
+        return self.data
+
 
 TRUE = Symbol('t')

@@ -1,6 +1,8 @@
 import string
+from atom import Symbol
 from optparse import OptionParser
 from env import Environment
+from function import Function
 
 from list import List
 
@@ -73,11 +75,20 @@ class Reader:
         return self.source[self.index-1]
 
 
+def setup_global_env(self, env):
+    env.push(Symbol("define"), Function(self.define))
+    env.push(Symbol("eq"), Function(self.eq))
+    env.push(Symbol("car"), Function(self.car))
+    env.push(Symbol("cdr"), Function(self.cdr))
+
+
 if __name__ == '__main__':
     p = OptionParser(version="ver:%s" % __version__)
     p.add_option('-f', '--file', help='target file')
     opts, args = p.parse_args()
     env = Environment()
+
+    setup_global_env(env)
 
     if opts.file:
         with open(opts.file, 'r') as f:
